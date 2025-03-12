@@ -1,6 +1,6 @@
-import { Route, Router, Routes } from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-
+//Routingの設定
 function App() {
   return (
     <Router>
@@ -11,7 +11,8 @@ function App() {
         <Route path="/todo/:id/edit" element={<TodoEdit  />} />  
         <Route path="*" element={<NotFound />} />  
       </Routes>
-    </Router>
-    
-  )
+    </Router>   
+  );
 }
+
+export default App;
