@@ -1,14 +1,27 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Todo } from "../types";
 
+type Props = {
+    todos: Todo[];
+    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
+};
 
-
-const TodoEdit = () => {
-    const { id } = useParams();
+const TodoEdit = ({ todos, setTodos }: Props) => {
+    const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const [text, setText] = useState("Sample Todo");
+    const todo = todos.find((t) => t.id === Number(id));
+
+    const [text, setText] = useState(todo?.text || "");
 
     const handleSave = () => {
+        if (!text.trim()) return;   
+        
+        setTodos(
+            todos.map((t) => 
+            t.id === Number(id)  ? { ...t, text, } : t
+        )
+    );
         navigate("/");
     };
 
