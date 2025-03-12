@@ -1,5 +1,9 @@
 import {BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
+import Home from "./pages/Home";
+import TodoDetail from "./pages/TodoDetail";
+import TodoCreate from "./pages/TodoCreate";
+import TodoEdit from "./pages/TodoEdit";
+import NotFound from "./pages/NotFound";
 //Routingの設定
 function App() {
   return (

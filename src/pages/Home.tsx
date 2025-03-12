@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Todo } from "../type";
+import { Todo } from "../types";
 import { Link } from "react-router-dom";
 
 
