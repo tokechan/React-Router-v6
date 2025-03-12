@@ -1,13 +1,10 @@
-import { Todo } from "../types";
 import { Link } from "react-router-dom";
+import { useTodoContext } from "../context/TodoContext";
 
 
-//propsの型定義
-type Props = {
-    todos: Todo[];
-};
-
-const Home = ({ todos }: Props) => {
+const Home = () => {
+    const  { todos } =useTodoContext()
+    
     return (
         <div>
             <h1>Todo List</h1>

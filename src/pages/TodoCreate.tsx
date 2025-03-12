@@ -1,26 +1,16 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Todo } from "../types";
+import { useTodoContext } from "../context/TodoContext";
 
-type Props = {
-    todos: Todo[];
-    setTodos: Dispatch<SetStateAction<Todo[]>>;
-};
 
-const TodoCreate = ({ todos, setTodos }: Props) => {
+const TodoCreate = () => {
     const navigate = useNavigate();
+    const { addTodo } = useTodoContext();
     const [text, setText] = useState("");
 
     const handeleCreate = () => {
-        // Create a new todo with a unique ID
-        const newTodo: Todo = {
-            id: todos.length + 1,
-            text: text,
-            completed: false
-        };
-        
-        // Add the new todo to the todos array
-        setTodos([...todos, newTodo]);
+        if(!text.trim()) return;
+        addTodo(text);
         navigate("/");
     };
 

@@ -6,6 +6,7 @@ import TodoCreate from "./pages/TodoCreate";
 import TodoEdit from "./pages/TodoEdit";
 import NotFound from "./pages/NotFound";
 import { Todo } from "./types";
+import { TodoProvider } from "./context/TodoContext";
 //Routingの設定
 function App() {
   const [todos, setTodos] = useState<Todo[]>([
@@ -15,15 +16,17 @@ function App() {
 
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Home todos={todos}  />} />
-        <Route path="/todo/new" element={<TodoCreate todos={todos} setTodos={setTodos} />} />  
-        <Route path="/todo/:id" element={<TodoDetail  todos={todos} setTodos={setTodos}/>} />  
-        <Route path="/todo/:id/edit" element={<TodoEdit  todos={todos} setTodos={setTodos}/>} />  
-        <Route path="*" element={<NotFound />} />  
-      </Routes>
-    </Router>   
+    <TodoProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home todos={todos}  />} />
+          <Route path="/todo/new" element={<TodoCreate todos={todos} setTodos={setTodos} />} />  
+          <Route path="/todo/:id" element={<TodoDetail  todos={todos} setTodos={setTodos}/>} />  
+          <Route path="/todo/:id/edit" element={<TodoEdit  todos={todos} setTodos={setTodos}/>} />  
+          <Route path="*" element={<NotFound />} />  
+        </Routes>
+      </Router>   
+    </TodoProvider>
   );
 }
 
