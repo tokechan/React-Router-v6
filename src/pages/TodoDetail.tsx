@@ -1,20 +1,16 @@
-import { Todo } from "../types";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useTodoContext } from "../context/TodoContext";
 
-type Props = {
-    todos: Todo[];
-    setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
-};
-
-const TodoDetail = ({ todos, setTodos }: Props) => {
+const TodoDetail = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { todos, deleteTodo } = useTodoContext();
     const todo = todos.find((t) => t.id === Number(id));
     
     if (!todo) return <p>Todo not found</p>;
 
     const handleDelete = () => {
-        setTodos(todos.filter(t => t.id !== todo.id));
+        deleteTodo(Number(id));
         navigate("/");
     };
 
