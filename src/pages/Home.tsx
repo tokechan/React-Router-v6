@@ -1,14 +1,13 @@
-import { useState } from "react";
 import { Todo } from "../types";
 import { Link } from "react-router-dom";
 
 
-const Home = () => {
-    const [todos, setTodos] = useState<Todo[]>([
-        {id: 1, text: "demo todo app", completed: false},
-        {id: 2, text: "demo react router v6", completed: false},
-    ]);
+//propsの型定義
+type Props = {
+    todos: Todo[];
+};
 
+const Home = ({ todos }: Props) => {
     return (
         <div>
             <h1>Todo List</h1>
