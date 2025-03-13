@@ -1,69 +1,39 @@
-import { Link } from "react-router-dom";
-import { useTodoContext } from "../context/TodoContext";
-import { Button, CheckBox, Text } from "../components/atoms";
+import styled from 'styled-components';
+import { Text } from '../components/atoms/Text';
+import { TodoList } from '../components/organisms/TodoList';
+import { TodoForm } from '../components/organisms/TodoForm';
+import { useTodos } from '../hooks/useTodos';
 
-const Home = () => {
-    const  { todos, deleteTodo, toggleTodoCompletion } =useTodoContext()
-    
+const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+`;
+
+const Header = styled.header`
+  margin-bottom: 32px;
+  text-align: center;
+`;
+
+export const Home = () => {
+    const { todos, addTodo, toggleTodoCompletion, deleteTodo, updateTodo } = useTodos();
+  
     return (
-        <div className="home-container">
-            <Text variant="h1">Todo List</Text>
-
-            <div className="actions">
-                <Link to="/todo/new">
-                    <Button variant="primary">New Todo</Button>
-                </Link>
-            </div>
-
-            <ul className="todo-list">
-                {todos.map((todo) => (
-                    <li key={todo.id} className="todo-item">
-                        <div className="todo-item__checkbox">
-                            <CheckBox
-                                checked={todo.completed}
-                                onChange={() => toggleTodoCompletion(todo.id)}
-                            />
-                        
-                            <Link to={`/todo/${todo.id}`} className="todo-item__Link">
-                                <span className={todo.completed ? 'completed' : ''}>
-                                    {todo.text}
-                                </span>
-                            </Link>
-                        </div>
-                        <Button
-                            variant="danger"
-                            size="small"
-                            onClick={() => deleteTodo(todo.id)}
-                        >
-                            Delete
-                        </Button>
-                    </li>
-                ))}
-            </ul>
-        </div>
+      <Container>
+        <Header>
+          <Text variant="h1">Todoリスト</Text>
+          <Text variant="p">タスクを管理しましょう</Text>
+        </Header>
+        
+        <TodoForm onAddTodo={addTodo} />
+        <TodoList 
+          todos={todos} 
+          onToggleTodo={toggleTodoCompletion} 
+          onEditTodo={updateTodo}
+          onDeleteTodo={deleteTodo} 
+        />
+      </Container>
     );
-};
+  };
 
-export default Home;
-
-
-// import { TodoForm, TodoList } from '../components/organisms';
-// import { useTodoContext } from '../context/TodoContext';
-
-// const Home = () => {
-//   const { todos, addTodo, deleteTodo, toggleTodoCompletion } = useTodoContext();
-
-//   return (
-//     <div className="home-container">
-//       <h1>Todo App</h1>
-//       <TodoForm onAddTodo={addTodo} />
-//       <TodoList 
-//         todos={todos}
-//         onToggleTodo={toggleTodoCompletion}
-//         onDeleteTodo={deleteTodo}
-//       />
-//     </div>
-//   );
-// };
-
-// export default Home;
+  export default Home;

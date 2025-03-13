@@ -43,7 +43,11 @@ export const useTodos = () => {
      * @param text 新しいTodo内容
      */
     const updateTodo = (id: number, text: string) => {
-        setTodos(todos.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
+        setTodos(prevTodos =>
+            prevTodos.map(todo =>
+                todo.id === id ? {...todo, text: text } : todo
+            )
+        );
     };
 
     /**
