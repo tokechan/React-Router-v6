@@ -5,19 +5,21 @@ type InputSize = 'small' | 'medium' | 'large';
 type InputVariant = 'default' | 'outlined' | 'filled';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  inputSize?: InputSize; // sizeからinputSizeに変更
+  $inputSize?: InputSize; // sizeからinputSizeに変更
   variant?: InputVariant;
-  fullWidth?: boolean;
+  $fullWidth?: boolean;
   error?: boolean;
   helperText?: string;
+  label?: string;
+
 }
 
-const StyledInputWrapper = styled.div<{ fullWidth?: boolean; error?: boolean }>`
+const InputContainer = styled.div<{ $fullWidth?: boolean; error?: boolean }>`
   display: inline-flex;
   flex-direction: column;
   position: relative;
   
-  ${props => props.fullWidth && css`
+  ${props => props.$fullWidth && css`
     width: 100%;
   `}
 `;
@@ -29,17 +31,17 @@ const StyledInput = styled.input<InputProps>`
   color: #333;
   
   /* サイズによるスタイル変更 */
-  ${props => props.inputSize === 'small' && css`
+  ${props => props.$inputSize === 'small' && css`
     padding: 6px 12px;
     font-size: 0.875rem;
   `}
   
-  ${props => (props.inputSize === 'medium' || !props.inputSize) && css`
+  ${props => (props.$inputSize === 'medium' || !props.$inputSize) && css`
     padding: 8px 16px;
     font-size: 1rem;
   `}
   
-  ${props => props.inputSize === 'large' && css`
+  ${props => props.$inputSize === 'large' && css`
     padding: 10px 20px;
     font-size: 1.125rem;
   `}
@@ -89,17 +91,17 @@ const StyledInput = styled.input<InputProps>`
   `}
   
   /* 幅100%のスタイル */
-  ${props => props.fullWidth && css`
-    width: 100%;
-  `}
+  width: ${props => props.$fullWidth ? '100%' : 'auto'};
+  `;
   
-  /* 無効状態のスタイル */
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    background-color: #f7fafc;
-  }
-`;
+const Label = styled.label`
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #333;
+  `;
+
 
 const HelperText = styled.span<{ error?: boolean }>`
   font-size: 0.75rem;
@@ -111,19 +113,20 @@ const HelperText = styled.span<{ error?: boolean }>`
 `;
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ inputSize = 'medium', variant = 'default', fullWidth, error, helperText, ...props }, ref) => {
+  ({ label, error, helperText, $inputSize = 'medium', variant = 'default', $fullWidth, className, ...props }, ref) => {
     return (
-      <StyledInputWrapper fullWidth={fullWidth} error={error}>
+      <InputContainer $fullWidth={$fullWidth} error={error} className={className}>
+        {label && <Label htmlFor={props.id}>{label}</Label>}
         <StyledInput
           ref={ref}
-          inputSize={inputSize}
+          $inputSize={$inputSize}
           variant={variant}
-          fullWidth={fullWidth}
+          $fullWidth={$fullWidth}
           error={error}
           {...props}
         />
         {helperText && <HelperText error={error}>{helperText}</HelperText>}
-      </StyledInputWrapper>
+      </InputContainer>
     );
   }
 );

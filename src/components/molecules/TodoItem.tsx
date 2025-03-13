@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Checkbox } from '../atoms/Checkbox';
 import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
-import { Input } from '../atoms';
+import { Input } from '../atoms/Input';
 
 
 export interface TodoItemProps {
@@ -30,11 +30,11 @@ const StyledTodoItem = styled.div`
   }
 `;
 
-const TodoText = styled(Text)<{ completed: boolean }>`
+const TodoText = styled(Text)<{ $completed: boolean }>`
   flex: 1;
   margin: 0 16px;
-  text-decoration: ${props => props.completed ? 'line-through' : 'none'};
-  color: ${props => props.completed ? '#718096' : '#333'};
+  text-decoration: ${props => props.$completed ? 'line-through' : 'none'};
+  color: ${props => props.$completed ? '#718096' : '#333'};
 `;
 
 const DeleteButton = styled(Button)`
@@ -56,7 +56,8 @@ const EditButton = styled(Button)`
 
 const EditInput = styled(Input)`
   flex: 1;
-  margin: 0 16px;
+  margin: 0 16px;   
+  $fullWidth
 `;
 
 
@@ -114,7 +115,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
       {isEditing ? (
         <>
             <EditInput
-            inputSize="medium"
+            $inputSize="medium"
             value={editText}
             onChange={(e) => setEditText(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -139,7 +140,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         <>
         <TodoText
         variant="p"
-        completed={completed}
+        $completed={completed}
         >
             {text}
         </TodoText>
