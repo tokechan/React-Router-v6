@@ -54,10 +54,23 @@ export const useTodos = () => {
         setTodos(todos.filter((todo) => todo.id !== id));
     };
 
-    return {
-        todos,
-        addTodo,
-        updateTodo,
-        deleteTodo
+    /**
+     * Todonの完了状態を切り替え
+     * @param id TodoのID
+     */
+    const toggleTodoCompletion = (id: number) => {
+        setTodos(
+        todos.map((todo) => 
+            todo.id === id ? {...todo, completed: !todo.completed} : todo
+        )
+        );
     };
+
+    return {
+    todos,
+    addTodo,
+    updateTodo,
+    deleteTodo,
+    toggleTodoCompletion
+    }
 }

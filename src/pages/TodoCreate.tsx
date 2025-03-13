@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTodoContext } from "../context/TodoContext";
+import { Button } from "../components/atoms";
 
 
 const TodoCreate = () => {
@@ -18,8 +19,10 @@ const TodoCreate = () => {
         <div>
             <h1>Create Todo</h1>
             <input value={text} onChange={(e) => setText(e.target.value)} />
-            <button onClick={handeleCreate}>Create</button>
-            <button onClick={() => navigate(-1)}>Cancel</button>
+            {/* <button onClick={handeleCreate}>Create</button>
+            <button onClick={() => navigate(-1)}>Cancel</button> */}
+            <Button onClick={handeleCreate}>Create</Button>
+            <Button onClick={() => navigate(-1)}>Cancel</Button>
         </div>
     );
 };
