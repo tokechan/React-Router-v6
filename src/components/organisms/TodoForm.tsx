@@ -1,53 +1,53 @@
-import { useState } from "react";
-import { Input } from "../atoms";
-import { Button } from "../atoms";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { Input } from '../atoms/Input';
+import { Button } from '../atoms/Button';
 
-type TodoFormProps = {
-    onAddTodo: (text: string) => void;
-    className?: string;
-};
-
-export const TodoForm = ({ onAddTodo, className = ''}: TodoFormProps) => {
-    const [text, setText] = useState('');
-    const [error, setError] = useState('');
-
-    const handleSubit =(e: React.FormEvent) => {
-        e.preventDefault();
-
-        //入力値のバリデーション
-        if (!text.trim()) {
-            setError('Todo cannot be empty');
-            return;
-        }
-
-        //Todoの追加
-        onAddTodo(text);
-        //入力値のクリア
-        setText('');
-        setError('');
-    };
-
-    return (
-        <form
-            onSubmit={handleSubit}
-            className={`todo-form ${className}`}
-        >
-        <div className="todo-form__input-container">
-            <Input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="New Todo please"
-                error={error}
-                fullWidth
-            />
-            </div>
-
-            <Button
-                type="submit"
-                variant="primary"
-            >
-                Add Todo
-            </Button>
-        </form>
-    )
+interface TodoFormProps {
+  onAddTodo: (text: string) => void;
 }
+
+const StyledForm = styled.form`
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  gap: 8px;
+`;
+
+const StyledInput = styled(Input)`
+  flex: 1;
+`;
+
+export const TodoForm: React.FC<TodoFormProps> = ({ onAddTodo }) => {
+  const [text, setText] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (text.trim()) {
+      onAddTodo(text.trim());
+      setText('');
+    }
+  };
+
+  return (
+    <StyledForm onSubmit={handleSubmit}>
+      <StyledInput
+        inputSize="medium"
+        placeholder="新しいタスクを入力..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        fullWidth
+      />
+      <Button
+        type="submit"
+        variant="primary"
+        size="medium"
+        disabled={!text.trim()}
+      >
+        追加
+      </Button>
+    </StyledForm>
+  );
+};
