@@ -4,6 +4,7 @@ import { Checkbox } from '../atoms/Checkbox';
 import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
 import { Input } from '../atoms/Input';
+import { useNavigate } from 'react-router-dom';
 
 
 export interface TodoItemProps {
@@ -18,21 +19,32 @@ export interface TodoItemProps {
 const StyledTodoItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 16px 20px;
+  border-radius: 12px;
   background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 8px;
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 700px;
   
   &:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+`;
+
+const TodoTextWrapper = styled.div`
+  flex: 1;
+  margin: 0 16px;
+  cursor: pointer;
+  
+  &:hover {
+    text-decoration: underline;
   }
 `;
 
 const TodoText = styled(Text)<{ $completed: boolean }>`
-  flex: 1;
-  margin: 0 16px;
   text-decoration: ${props => props.$completed ? 'line-through' : 'none'};
   color: ${props => props.$completed ? '#718096' : '#333'};
 `;
@@ -71,6 +83,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(text);
+  const navigate = useNavigate();
 
   const handleToggle = () => {
     onToggle(id);
@@ -103,6 +116,12 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         handleCancel();
     }
   };
+
+  const handleTextClick = () => {
+    if(!isEditing) {
+        navigate(`/todo/${id}`);    
+    }
+  }
   
   return (
     <StyledTodoItem>
@@ -138,12 +157,14 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         </>
       ) : (
         <>
-        <TodoText
-        variant="p"
-        $completed={completed}
-        >
-            {text}
-        </TodoText>
+        <TodoTextWrapper onClick={handleTextClick}>
+          <TodoText
+          variant="p"
+          $completed={completed}
+          >
+              {text}
+          </TodoText>
+        </TodoTextWrapper>
         {onEdit && (
             <EditButton
             variant="secondary"

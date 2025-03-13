@@ -1,29 +1,120 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useTodoContext } from "../context/TodoContext";
+import { Text } from "../components/atoms";
+import { Input } from "../components/atoms";
 import { Button } from "../components/atoms";
+import styled from "styled-components";
+import { useTodoContext } from "../context/TodoContext";
 
+const Container = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Header = styled.div`
+  margin-bottom: 32px;
+  text-align: center;
+  padding: 24px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+`;
+
+const FormContainer = styled.div`
+  background-color: pink;
+  border-radius: 8px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
+const ButtonGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+`;
+
+const StyledInput = styled(Input)`
+  max-width: 500px;
+  text-align: center;
+`;
 
 const TodoCreate = () => {
     const navigate = useNavigate();
     const { addTodo } = useTodoContext();
     const [text, setText] = useState("");
 
-    const handeleCreate = () => {
+    const handleCreate = () => {
         if(!text.trim()) return;
         addTodo(text);
         navigate("/");
     };
 
+    const handleCancel = () => {
+        navigate("/");
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if(e.key === 'Enter') {
+            handleCreate();
+        }
+    };
+
     return (
-        <div>
-            <h1>Create Todo</h1>
-            <input value={text} onChange={(e) => setText(e.target.value)} />
-            {/* <button onClick={handeleCreate}>Create</button>
-            <button onClick={() => navigate(-1)}>Cancel</button> */}
-            <Button onClick={handeleCreate}>Create</Button>
-            <Button onClick={() => navigate(-1)}>Cancel</Button>
-        </div>
+        <Container>
+            <Header>
+                <Text variant="h1">現状共有でーす</Text>
+                <Text variant="p">これでモレを泣くそう</Text>
+            </Header>
+
+            <FormContainer>
+                <FormGroup>
+                    <Text variant="label">共有すること</Text>
+                    <StyledInput
+                        $inputSize="large"
+                        $fullWidth
+                        placeholder="共有しておかなきゃいけないこと"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        autoFocus
+                    />
+                </FormGroup>
+
+                <ButtonGroup>
+                    <Button
+                        variant="primary"
+                        size="medium"
+                        onClick={handleCreate}
+                        disabled={!text.trim()}
+                    >
+                        書き残す
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        size="medium"
+                        onClick={handleCancel}
+                    >
+                        やめる
+                    </Button>
+                </ButtonGroup>
+            </FormContainer>
+        </Container>
     );
 };
 
