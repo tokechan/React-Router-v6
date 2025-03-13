@@ -34,11 +34,11 @@ export const TodoForm: React.FC<TodoFormProps> = ({ onAddTodo }) => {
   return (
     <StyledForm onSubmit={handleSubmit}>
       <StyledInput
-        inputSize="medium"
+        $inputSize="medium"
         placeholder="新しいタスクを入力..."
         value={text}
         onChange={(e) => setText(e.target.value)}
-        fullWidth
+        $fullWidth
       />
       <Button
         type="submit"
