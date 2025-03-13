@@ -79,7 +79,7 @@ const TodoCreate = () => {
         <Container>
             <Header>
                 <Text variant="h1">現状共有でーす</Text>
-                <Text variant="p">これでモレを泣くそう</Text>
+                <Text variant="p">これでモレをなくそう</Text>
             </Header>
 
             <FormContainer>
@@ -88,7 +88,7 @@ const TodoCreate = () => {
                     <StyledInput
                         $inputSize="large"
                         $fullWidth
-                        placeholder="共有しておかなきゃいけないこと"
+                        placeholder="共有しまーす"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         onKeyDown={handleKeyDown}
@@ -103,14 +103,14 @@ const TodoCreate = () => {
                         onClick={handleCreate}
                         disabled={!text.trim()}
                     >
-                        書き残す
+                        書き記す
                     </Button>
                     <Button
                         variant="secondary"
                         size="medium"
                         onClick={handleCancel}
                     >
-                        やめる
+                        必要なかった
                     </Button>
                 </ButtonGroup>
             </FormContainer>

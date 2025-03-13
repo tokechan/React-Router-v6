@@ -9,24 +9,33 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 40px 20px;
+  box-sizing: border-box;
 `;
 
-const Header = styled.header`
+const Header = styled.div`
   margin-bottom: 32px;
   text-align: center;
   padding: 24px;
   border-radius: 12px;
   background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const HeaderActions = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 16px;
+`;
+
+const TodoListWrapper = styled.div`
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const Home = () => {
@@ -53,12 +62,14 @@ export const Home = () => {
           </HeaderActions>
         </Header>
         
-        <TodoList 
-          todos={todos} 
-          onToggleTodo={toggleTodoCompletion} 
-          onEditTodo={updateTodo}
-          onDeleteTodo={deleteTodo} 
-        />
+        <TodoListWrapper>
+          <TodoList 
+            todos={todos} 
+            onToggleTodo={toggleTodoCompletion} 
+            onEditTodo={updateTodo}
+            onDeleteTodo={deleteTodo} 
+          />
+        </TodoListWrapper>
       </Container>
     );
   };

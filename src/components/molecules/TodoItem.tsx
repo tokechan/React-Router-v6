@@ -19,14 +19,14 @@ export interface TodoItemProps {
 const StyledTodoItem = styled.div`
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  padding: 16px 24px;
   border-radius: 12px;
   background-color: white;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
   margin-bottom: 12px;
   transition: all 0.3s ease;
   width: 100%;
-  max-width: 700px;
+  box-sizing: border-box;
   
   &:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
