@@ -17,7 +17,7 @@ interface TextProps {
 // 共通のスタイルを定義
 const textStyles = css<TextProps>`
   margin: 0;
-  color: ${props => props.color || '#333'};
+  color: ${props => props.color || '#666'};
   
   /* バリアントによるスタイル変更 */
   ${props => props.variant === 'h1' && css`

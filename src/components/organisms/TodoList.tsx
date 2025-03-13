@@ -20,8 +20,6 @@ const StyledTodoList = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
 `;
 
 const EmptyState = styled.div`
@@ -40,8 +38,8 @@ export const TodoList: React.FC<TodoListProps> = ({ todos, onToggleTodo, onDelet
   if (todos.length === 0) {
     return (
       <EmptyState>
-        <Text variant="h4" align="center">タスクがありません</Text>
-        <Text variant="p" align="center">新しいタスクを追加してください</Text>
+        <Text variant="h4" align="center">今日は大丈夫？</Text>
+        <Text variant="p" align="center">それはいいことだね！</Text>
       </EmptyState>
     );
   }
@@ -49,7 +47,7 @@ export const TodoList: React.FC<TodoListProps> = ({ todos, onToggleTodo, onDelet
   return (
     <StyledTodoList>
       {todos.map((todo) => (
-        <TodoItem
+        <TodoItem       
           key={todo.id}
           id={todo.id}
           text={todo.text}
