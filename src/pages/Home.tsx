@@ -57,7 +57,7 @@ export const Home = () => {
               size="medium"
               onClick={handleCreateNew}
             >
-              見てねー⚠️
+              共有するべし⚠️
             </Button>
           </HeaderActions>
         </Header>
