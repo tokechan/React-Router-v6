@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Checkbox } from '../atoms/Checkbox';
 import { Text } from '../atoms/Text';
 import { Button } from '../atoms/Button';
-import { Input } from '../atoms/Input';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -66,13 +65,6 @@ const EditButton = styled(Button)`
   }
 `;
 
-const EditInput = styled(Input)`
-  flex: 1;
-  margin: 0 16px;   
-  $fullWidth
-`;
-
-
 export const TodoItem: React.FC<TodoItemProps> = ({
   id,
   text,
@@ -81,8 +73,6 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   onDelete,
   onEdit
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editText, setEditText] = useState(text);
   const navigate = useNavigate();
 
   const handleToggle = () => {
@@ -96,31 +86,9 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   const handleEdit = () => {
     navigate(`/todo/${id}/edit`);
   };
-  
-  const handleSave = () => {
-    if (editText.trim() && onEdit) {
-        onEdit(id, editText);
-    }
-    setIsEditing(false);
-  };
-  
-  const handleCancel = () => {
-    setEditText(text);
-    setIsEditing(false);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-        handleSave();
-    } else if(e.key === 'Escape'){
-        handleCancel();
-    }
-  };
 
   const handleTextClick = () => {
-    if(!isEditing) {
-        navigate(`/todo/${id}`);    
-    }
+    navigate(`/todo/${id}`);    
   }
   
   return (
@@ -131,60 +99,32 @@ export const TodoItem: React.FC<TodoItemProps> = ({
         aria-label={`Mark "${text}" as ${completed ? 'incomplete' : 'complete'}`}
       />
 
-      {isEditing ? (
-        <>
-            <EditInput
-            $inputSize="medium"
-            value={editText}
-            onChange={(e) => setEditText(e.target.value)}
-            onKeyDown={handleKeyDown}
-            autoFocus
-            />
-            <Button 
-            variant="primary"
-            size="small"
-            onClick={handleSave}
-            >
-              保存
-            </Button>
-            <Button 
-            variant="danger"
-            size="small"
-            onClick={handleCancel}
-            >
-              キャンセル
-            </Button>
-        </>
-      ) : (
-        <>
-        <TodoTextWrapper onClick={handleTextClick}>
-          <TodoText
-          variant="p"
-          $completed={completed}
-          >
-              {text}
-          </TodoText>
-        </TodoTextWrapper>
-        {onEdit && (
-            <EditButton
-            variant="secondary"
-            size="small"
-            onClick={handleEdit}
-            aria-label={`Edit "${text}"`}
-            >
-              編集
-            </EditButton>
-        )}
-        <DeleteButton
-        variant="danger"
-        size="small"
-        onClick={handleDelete}
-        aria-label={`Delete "${text}"`}
+      <TodoTextWrapper onClick={handleTextClick}>
+        <TodoText
+        variant="p"
+        $completed={completed}
         >
-          削除
-        </DeleteButton>
-        </>
+            {text}
+        </TodoText>
+      </TodoTextWrapper>
+      {onEdit && (
+          <EditButton
+          variant="secondary"
+          size="small"
+          onClick={handleEdit}
+          aria-label={`Edit "${text}"`}
+          >
+            編集
+          </EditButton>
       )}
+      <DeleteButton
+      variant="danger"
+      size="small"
+      onClick={handleDelete}
+      aria-label={`Delete "${text}"`}
+      >
+        削除
+      </DeleteButton>
     </StyledTodoItem>
   );
 };
