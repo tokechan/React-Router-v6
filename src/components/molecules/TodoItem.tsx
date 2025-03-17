@@ -94,7 +94,7 @@ export const TodoItem: React.FC<TodoItemProps> = ({
   };
 
   const handleEdit = () => {
-    setIsEditing(true);
+    navigate(`/todo/${id}/edit`);
   };
   
   const handleSave = () => {
