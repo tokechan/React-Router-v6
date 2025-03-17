@@ -1,6 +1,5 @@
 # backend/Dockerfile
-FROM php:8.2-fpm
-
+FROM docker.io/library/php:8.2-fpm
 # システムの依存関係インストール
 RUN apt-get update && apt-get install -y \
     git \
