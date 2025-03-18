@@ -5,23 +5,24 @@ import TodoCreate from "./pages/TodoCreate";
 import TodoEdit from "./pages/TodoEdit";
 import NotFound from "./pages/NotFound";
 import { TodoProvider } from "./context/TodoContext";
+import { MemoProvider } from "./context/MemoContext";
+
 //Routingの設定
 function App() {
-
-
-
   return (
-    <TodoProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/todo/new" element={<TodoCreate />} />  
-          <Route path="/todo/:id" element={<TodoDetail  />} />  
-          <Route path="/todo/:id/edit" element={<TodoEdit  />} />  
-          <Route path="*" element={<NotFound />} />  
-        </Routes>
-      </Router>   
-    </TodoProvider>
+    <MemoProvider>
+      <TodoProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/todo/new" element={<TodoCreate />} />  
+            <Route path="/todo/:id" element={<TodoDetail  />} />  
+            <Route path="/todo/:id/edit" element={<TodoEdit  />} />  
+            <Route path="*" element={<NotFound />} />  
+          </Routes>
+        </Router>   
+      </TodoProvider>
+    </MemoProvider>
   );
 }
 
