@@ -2,8 +2,11 @@ import styled from 'styled-components';
 import { Text } from '../components/atoms/Text';
 import { TodoList } from '../components/organisms/TodoList';
 import { useTodoContext } from '../context/TodoContext';
+import { useMemoContext } from '../context/MemoContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/atoms';
+import { useEffect, useState } from 'react';
+import { memosToTodos } from '../adapters/MemoAdapter';
 
 const Container = styled.div`
   display: flex;
@@ -40,11 +43,94 @@ const TodoListWrapper = styled.div`
 
 export const Home = () => {
     const { todos, toggleTodoCompletion, deleteTodo, updateTodo } = useTodoContext();
+    const { memos, loading, error, fetchMemos, toggleMemoCompletion, deleteMemoItem, updateMemoItem } = useMemoContext();
     const navigate = useNavigate();
+    const [displayTodos, setDisplayTodos] = useState(todos);
+    
+    // コンポーネントマウント時にメモを取得
+    useEffect(() => {
+      fetchMemos();
+    }, []); // 依存配列を空にして初回レンダリング時のみ実行
+    
+    // メモデータをTodo型に変換して表示
+    useEffect(() => {
+      if (memos && memos.length > 0) {
+        // メモデータがある場合はそれを表示
+        setDisplayTodos(memosToTodos(memos));
+      } else {
+        // メモデータがない場合は既存のTodoデータを表示
+        setDisplayTodos(todos);
+      }
+    }, [memos, todos]);
 
     const handleCreateNew = () => {
         navigate('/todo/new');
     };
+    
+    // メモの完了状態を切り替える
+    const handleToggleTodo = (id: number) => {
+      if (memos && memos.length > 0) {
+        // メモデータを使用している場合
+        const memo = memos.find(m => m.id === id);
+        if (memo) {
+          toggleMemoCompletion(id);
+        } else {
+          toggleTodoCompletion(id);
+        }
+      } else {
+        // 既存のTodoデータを使用している場合
+        toggleTodoCompletion(id);
+      }
+    };
+    
+    // メモを削除する
+    const handleDeleteTodo = (id: number) => {
+      if (memos && memos.length > 0) {
+        // メモデータを使用している場合
+        const memo = memos.find(m => m.id === id);
+        if (memo) {
+          deleteMemoItem(id);
+        } else {
+          deleteTodo(id);
+        }
+      } else {
+        // 既存のTodoデータを使用している場合
+        deleteTodo(id);
+      }
+    };
+    
+    // メモを編集する
+    const handleEditTodo = (id: number, newText: string) => {
+      if (memos && memos.length > 0) {
+        // メモデータを使用している場合
+        const memo = memos.find(m => m.id === id);
+        if (memo) {
+          updateMemoItem(id, { content: newText });
+        } else if (updateTodo) {
+          updateTodo(id, newText);
+        }
+      } else if (updateTodo) {
+        // 既存のTodoデータを使用している場合
+        updateTodo(id, newText);
+      }
+    };
+  
+    if (loading) {
+      return (
+        <Container>
+          <Text variant="h4" align="center">読み込み中...</Text>
+        </Container>
+      );
+    }
+    
+    if (error) {
+      return (
+        <Container>
+          <Text variant="h4" align="center">エラーが発生しました</Text>
+          <Text variant="p" align="center">{error}</Text>
+        </Container>
+      );
+    }
   
     return (
       <Container>
@@ -64,10 +150,10 @@ export const Home = () => {
         
         <TodoListWrapper>
           <TodoList 
-            todos={todos} 
-            onToggleTodo={toggleTodoCompletion} 
-            onEditTodo={updateTodo}
-            onDeleteTodo={deleteTodo} 
+            todos={displayTodos} 
+            onToggleTodo={handleToggleTodo} 
+            onEditTodo={handleEditTodo}
+            onDeleteTodo={handleDeleteTodo} 
           />
         </TodoListWrapper>
       </Container>
