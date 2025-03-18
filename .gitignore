@@ -7,10 +7,27 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Frontend
 node_modules
 dist
 dist-ssr
 *.local
+
+# Backend (Laravel)
+/backend/vendor/
+/backend/node_modules/
+/backend/public/build
+/backend/public/hot
+/backend/public/storage
+/backend/storage/*.key
+/backend/.env.backup
+/backend/.env.production
+/backend/.phpunit.result.cache
+/backend/Homestead.json
+/backend/Homestead.yaml
+/backend/auth.json
+/backend/npm-debug.log
+/backend/yarn-error.log
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +39,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Misc
+.env
