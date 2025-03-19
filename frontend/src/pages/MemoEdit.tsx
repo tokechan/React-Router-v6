@@ -5,9 +5,8 @@ import { Input } from "../components/atoms";
 import { Button } from "../components/atoms";
 import styled from "styled-components";
 import { useMemoContext } from "../context/MemoContext";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useMemoForm } from "../hooks/useMemoForm";
+import { MemoFormData } from "../schemas/memoSchema";
 import { useEffect, useState } from "react";
 import { Memo } from "../types";
 
@@ -82,26 +81,23 @@ const RadioLabel = styled.label`
   cursor: pointer;
 `;
 
-// メモフォームのバリデーションスキーマ
-const memoSchema = z.object({
-  content: z.string().min(1, { message: 'メモの内容は必須です' }),
-  creator: z.enum(['夫', '妻'], { 
-    required_error: '作成者を選択してください',
-    invalid_type_error: '作成者は「夫」または「妻」を選択してください'
-  }),
-  status: z.string().default('メモっとくね'),
-  completed: z.boolean().default(false)
-});
-
-type MemoFormValues = z.infer<typeof memoSchema>;
-
 const MemoEdit = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { memos, updateMemoItem } = useMemoContext();
-    const [loading, setLoading] = useState(true);
     const [memo, setMemo] = useState<Memo | null>(null);
-    
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (id && memos.length > 0) {
+            const foundMemo = memos.find(m => m.id === parseInt(id));
+            if (foundMemo) {
+                setMemo(foundMemo);
+            }
+            setLoading(false);
+        }
+    }, [id, memos]);
+
     // React Hook Formの設定
     const { 
       register, 
@@ -109,28 +105,24 @@ const MemoEdit = () => {
       formState: { errors, isValid, isSubmitting },
       reset,
       setValue
-    } = useForm<MemoFormValues>({
-      resolver: zodResolver(memoSchema),
-      mode: "onChange"
-    });
+    } = useMemoForm(memo ? {
+        content: memo.content,
+        creator: memo.creator as '夫' | '妻',
+        status: memo.status,
+        completed: memo.completed
+    } : undefined);
 
-    // メモデータの取得
+    // メモデータが読み込まれたらフォームの値を設定
     useEffect(() => {
-      if (id && memos.length > 0) {
-        const foundMemo = memos.find(m => m.id === Number(id));
-        if (foundMemo) {
-          setMemo(foundMemo);
-          // フォームに値をセット
-          setValue('content', foundMemo.content);
-          setValue('creator', foundMemo.creator as '夫' | '妻');
-          setValue('status', foundMemo.status);
-          setValue('completed', foundMemo.completed);
+        if (memo) {
+            setValue('content', memo.content);
+            setValue('creator', memo.creator as '夫' | '妻');
+            setValue('status', memo.status);
+            setValue('completed', memo.completed);
         }
-        setLoading(false);
-      }
-    }, [id, memos, setValue]);
+    }, [memo, setValue]);
 
-    const onSubmit = async (data: MemoFormValues) => {
+    const onSubmit = async (data: MemoFormData) => {
         if (!id) return;
         
         try {

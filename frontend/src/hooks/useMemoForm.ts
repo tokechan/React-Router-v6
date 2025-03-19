@@ -1,16 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-
-// メモフォームのスキーマ定義
-export const memoSchema = z.object({
-  content: z.string().min(1, '内容を入力してください'),
-  creator: z.string().min(1, '作成者を選択してください'),
-  status: z.string().optional(),
-  completed: z.boolean().optional()
-});
-
-export type MemoFormData = z.infer<typeof memoSchema>;
+import { memoSchema, MemoFormData } from '../schemas/memoSchema';
 
 /**
  * メモフォーム用のカスタムフック

@@ -5,9 +5,8 @@ import { Input } from "../components/atoms";
 import { Button } from "../components/atoms";
 import styled from "styled-components";
 import { useMemoContext } from "../context/MemoContext";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { useMemoForm } from "../hooks/useMemoForm";
+import { MemoFormData } from "../schemas/memoSchema";
 
 const Container = styled.div`
   max-width: 800px;
@@ -80,18 +79,6 @@ const RadioLabel = styled.label`
   cursor: pointer;
 `;
 
-// メモフォームのバリデーションスキーマ
-const memoSchema = z.object({
-  content: z.string().min(1, { message: 'メモの内容は必須です' }),
-  creator: z.enum(['夫', '妻'], { 
-    required_error: '作成者を選択してください',
-    invalid_type_error: '作成者は「夫」または「妻」を選択してください'
-  }),
-  status: z.string().default('メモっとくね')
-});
-
-type MemoFormValues = z.infer<typeof memoSchema>;
-
 const MemoCreate = () => {
     const navigate = useNavigate();
     const { addMemo } = useMemoContext();
@@ -102,16 +89,12 @@ const MemoCreate = () => {
       handleSubmit, 
       formState: { errors, isValid, isSubmitting },
       reset
-    } = useForm<MemoFormValues>({
-      resolver: zodResolver(memoSchema),
-      mode: "onChange",
-      defaultValues: {
-        status: 'メモっとくね',
-        creator: '夫' // デフォルト値
-      }
+    } = useMemoForm({
+      status: 'メモっとくね',
+      creator: '夫' // デフォルト値
     });
 
-    const onSubmit = async (data: MemoFormValues) => {
+    const onSubmit = async (data: MemoFormData) => {
         try {
           await addMemo(data.content, data.creator);
           reset();
