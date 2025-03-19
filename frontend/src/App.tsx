@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import MemoCreate from './pages/MemoCreate';
 import MemoEdit from './pages/MemoEdit';
 import MemoDetail from './pages/MemoDetail';
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             {/* 公開ルート */}
             <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
             
             {/* 保護されたルート */}
             <Route element={<PrivateRoute />}>
