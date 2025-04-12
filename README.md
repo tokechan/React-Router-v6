@@ -114,12 +114,3 @@ Todo-app/
 | GET     | /api/memos/{id} | 特定のメモを取得 |
 | PUT     | /api/memos/{id} | メモを更新 |
 | DELETE  | /api/memos/{id} | メモを削除 |
-
-
-## ライセンス
-
-このプロジェクトは [MIT ライセンス](LICENSE) の下で公開されています。
-
-## 連絡先
-
-質問や提案がある場合は、[issues](https://github.com/yourusername/Todo-app/issues) でお知らせください。
